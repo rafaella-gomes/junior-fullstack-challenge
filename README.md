@@ -36,6 +36,12 @@ When you're done, please:
 ## 🛠️ Getting Started
 
 ```bash
+# Clone the repo
+git clone git@github.com:faurecia-aptoide/junior-fullstack-challenge.git # or use https
+cd junior-fullstack-challenge
+```
+
+```bash
 # Install dependencies
 npm install
 
