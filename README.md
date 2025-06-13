@@ -45,7 +45,7 @@
 
 ### 📦 Code Structure
 
-- **Componentization:** Created reusable components like `ProjectForm`, `ProjectCard`, `ProjectsGrid`, `EmptyProjectState`, and `HomeHeader` for better organization, clarity, and maintainability.
+- **Componentization:** Created reusable components like `ProjectForm`, `ProjectCard`, `ProjectsGrid`, `EmptyProjectState`, and `HomeHeader`, `FormField` for better organization, clarity, and maintainability.
 - **Custom Hook:** Introduced `useProject` to encapsulate logic related to form state and submission, separating concerns between logic and UI.
 
 ### 🧾 Typing & Validation
@@ -94,7 +94,7 @@ Although this version focuses on creating and listing projects, the next steps w
 - Add an "Edit" button to each `ProjectCard`.
 - On click, show a form pre-filled with existing data.
 - On submit, send a `PUT` request to `/api/projects/:id`.
-- Optimistically update local state after success.
+- Update project on local state after success response.
 
 ### 🗑️ Delete Project
 
