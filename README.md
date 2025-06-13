@@ -1,77 +1,131 @@
-# Dev Projects Tracker – Starter Repo
-
-This is a minimal Next.js + TypeScript project scaffold for the tech challenge.
-
-⚠️ This version includes **6 hidden bugs** and **2 missing features (TODOs)** you must address.
-
-⏱️ Estimated time to complete: **~4 hours**
-
-## 🎯 Your Challenge
-
-- Debug and fix the issues preventing the app from running correctly
-- Improve the UI for a cleaner look and better user experience
-
-Hint: Some bugs are in the API, some in the frontend logic.
-
-## 💡 Bonus Points
-
-- Code is modular and cleanly organized
-- Form includes basic validation or user feedback
-- Unit test(s) added for component or API route
-- UI is responsive and styled (you can use Tailwind, styled-components, etc.)
-- Clear git history showing your thought process
-
-## 📤 Submission
-
-When you're done, please:
-
-- Push your solution to a **public GitHub repo**
-- Include a brief `README.md` explaining:
-  - What you fixed or changed
-  - Any improvements or extras you added
-- Share the link with us
+# 🗂️ Dev Projects Tracker – Refactoring and Improvements
 
 ---
 
-## 🛠️ Getting Started
+## ✅ Bug Fixes
 
-```bash
-# Clone the repo
-git clone git@github.com:faurecia-aptoide/junior-fullstack-challenge.git # or use https
-cd junior-fullstack-challenge
-```
+- **[Case 1] Incorrect endpoint**
 
-```bash
-# Install dependencies
-npm install
+  - **Issue:** The frontend was sending requests to `/api/project`, while the backend expected `/api/projects`.
+  - **Impact:** Triggered 404 errors.
+  - **Fix:** Updated all frontend calls to use `/api/projects`.
 
-# Start the dev server
-npm run dev
-```
+- **[Case 2] Enum `Methods` with incorrect casing**
 
-Visit `http://localhost:3000` to view the app.
+  - **Issue:** The `GET` method was defined as `Get` (case-sensitive).
+  - **Impact:** The API didn’t recognize `GET` requests, resulting in 405 errors.
+  - **Fix:** Updated enum values to uppercase to match `req.method`.
+
+- **[Case 3] `techStack` type inconsistency**
+
+  - **Issue:** The form state expected `string[]`, but the input was a comma-separated `string`.
+  - **Impact:** Caused type errors and transformation failures.
+  - **Fix:** Treated the field as `string` in the form and converted it to an array using `.split(',')` only before submission.
+
+- **[Case 4] Usage of undefined `methods.GET`**
+
+  - **Issue:** Reference to a non-existent constant.
+  - **Impact:** Build error: `Cannot find name 'methods'`.
+  - **Fix:** Replaced with `Methods.GET` from the properly declared enum.
+
+- **[Case 5] Non-existent function in store**
+
+  - **Issue:** Tried calling `modifyProject`, which didn’t exist.
+  - **Impact:** Code breakage due to failed import.
+  - **Fix:** Replaced with `updateProject`, which was already implemented and correct for PUT requests.
+
+- **[Case 6] Incorrect typing of `projects`**
+  - **Issue:** Declared as a single `Project`, but the actual data was a `Project[]`.
+  - **Impact:** Broke `.map()` and list rendering.
+  - **Fix:** Corrected to `Project[]`.
 
 ---
 
-## 📡 API Routes
+## 🔧 Improvements & Refactoring
 
-Data lives in-memory (no external DB). Available endpoints:
+### 📦 Code Structure
 
-| Method | Endpoint            | Description                |
-|--------|---------------------|----------------------------|
-| GET    | /api/projects       | List all projects          |
-| POST   | /api/projects       | Create a new project       |
-| GET    | /api/projects/:id   | Get a single project       |
-| PUT    | /api/projects/:id   | Update a project           |
-| DELETE | /api/projects/:id   | Delete a project           |
+- **Componentization:** Created reusable components like `ProjectForm`, `ProjectCard`, `ProjectsGrid`, `EmptyProjectState`, and `HomeHeader` for better organization, clarity, and maintainability.
+- **Custom Hook:** Introduced `useProject` to encapsulate logic related to form state and submission, separating concerns between logic and UI.
 
-Because data is stored in a module‑level array, it **resets whenever the dev server restarts**. That’s OK for this challenge.
+### 🧾 Typing & Validation
+
+- **Zod + React Hook Form:** Implemented Zod schemas for form validation and integrated with `react-hook-form` to ensure clean error handling and type safety.
+- **Typed Status Field:** The `<select>` status field strictly reflects valid enum values (`Backlog`, `In Progress`, `Completed`).
 
 ---
 
-🤔 Need Help?
+## 🎨 Design & UX
+
+- **Visual Prototyping (v0):** Selected a warm autumn color palette and sketched an initial layout to establish an interface that is visually appealing and aligned with the app’s purpose.
+- **React Icons:** Used `react-icons` to enhance visual hierarchy and usability.
+- **Tailwind CSS:** Applied for styling and responsive layout across form and card components.
+
 ---
 
-If you get completely stuck or run into something unclear, don’t hesitate to reach out. We’re not testing your ability to suffer in silence — we want to see how you **think**, **analyze and fix bugs**, **write code**, and **structure a small project**. You can email us if needed.
+## 🧪 API Tests
 
-__Good luck!__
+Added basic tests for the `/api/projects` endpoint using `jest` and `node-mocks-http`:
+
+- **GET:** Returns all projects with `200 OK`.
+- **POST:** Adds a valid project and returns `201 Created`.
+- **POST (no `techStack`):** Defaults to an empty array.
+- **POST (missing required fields):** Returns `400 Bad Request`.
+- **Other methods (e.g., DELETE):** Returns `405 Method Not Allowed`.
+
+---
+
+## 🧪 Future Testing Plans
+
+If more time was available, I would add unit tests for:
+
+- **`useProject` hook:** Mocking fetch requests and verifying state transitions.
+- **`ProjectForm`:** Simulating user input and validating form behavior.
+- **`ProjectCard`:** Ensuring update/delete UI interactions behave as expected.
+
+---
+
+## 🔁 Update & Delete Functionality
+
+Although this version focuses on creating and listing projects, the next steps would include:
+
+### ✏️ Update Project
+
+- Add an "Edit" button to each `ProjectCard`.
+- On click, show a form pre-filled with existing data.
+- On submit, send a `PUT` request to `/api/projects/:id`.
+- Optimistically update local state after success.
+
+### 🗑️ Delete Project
+
+- Add a delete icon/button to `ProjectCard`.
+- Confirm action via modal or alert.
+- On confirm, send a `DELETE` request to `/api/projects/:id`.
+- Remove the project from local state upon success.
+
+Both features would extend the `useProject` hook with `updateProject` and `deleteProject` functions and expand the API handler accordingly.
+
+---
+
+## 💡 Additional Ideas
+
+- **React Query:** Replace `useEffect`/`fetch` with React Query for improved caching, refetching, and state syncing.
+- **Persistent Backend:** Swap the in-memory store with a real backend (e.g., Firebase, PostgreSQL).
+- **Search & Filter:** Allow users to search or filter projects by title, status, or tech stack.
+
+---
+
+## ✅ Completed TODOs
+
+- [x] Replaced direct calls with existing `getAllProjects`.
+- [x] Implemented responsive UI using Tailwind.
+- [x] Fixed type and enum issues.
+- [x] Refactored into reusable components.
+- [x] Added validation with Zod.
+- [x] Created basic unit tests for the `/api/projects` route.
+
+---
+
+## 🙌 Final Thoughts
+
+I really enjoyed working on this project! It was a great opportunity to reinforce best practices with TypeScript, testing, and componentization in React. I’ve also included some ideas and improvements I would implement with more time — including full test coverage for hooks and components, as well as edit and delete functionality for projects.
