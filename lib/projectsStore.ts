@@ -1,35 +1,35 @@
-import { Project } from '../types/project';
+import { Project } from "../types/project";
 
-let projects: Project = [
+let projects: Project[] = [
   {
-    id: '1',
-    title: 'Dev Portfolio',
-    description: 'A personal site to showcase my work',
-    status: 'Completed',
-    techStack: ['Next.js', 'TypeScript', 'Tailwind'],
+    id: "1",
+    title: "Dev Portfolio",
+    description: "A personal site to showcase my work",
+    status: "Completed",
+    techStack: ["Next.js", "TypeScript", "Tailwind"],
     createdAt: new Date().toISOString(),
   },
   {
-    id: '2',
-    title: 'E-commerce Store',
-    description: 'A full-stack e-commerce application',
-    status: 'In Progress',
-    techStack: ['React', 'Node.js', 'MongoDB'],
+    id: "2",
+    title: "E-commerce Store",
+    description: "A full-stack e-commerce application",
+    status: "In Progress",
+    techStack: ["React", "Node.js", "MongoDB"],
     createdAt: new Date().toISOString(),
   },
   {
-    id: '3',
-    title: 'Blog Platform',
-    description: 'A blogging platform with user authentication',
-    status: 'Backlog',
-    techStack: ['Gatsby', 'GraphQL', 'Contentful'],
+    id: "3",
+    title: "Blog Platform",
+    description: "A blogging platform with user authentication",
+    status: "Backlog",
+    techStack: ["Gatsby", "GraphQL", "Contentful"],
     createdAt: new Date().toISOString(),
   },
 ];
 
 export const getProjects = () => projects;
 
-export const addProject = (p: Omit<Project, 'id' | 'createdAt'>) => {
+export const addProject = (p: Omit<Project, "id" | "createdAt">) => {
   const newProj: Project = {
     ...p,
     id: (projects.length + 1).toString(),
